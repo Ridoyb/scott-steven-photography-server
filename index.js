@@ -53,7 +53,7 @@ async function run() {
             const query = { _id: ObjectId(id) };
             const service = await reviewsCollection.findOne(query);
             res.send(service);
-            
+
         });
   
       // add new review
@@ -63,7 +63,7 @@ async function run() {
         res.send(result);
       });
 
-      //Edit review
+      //Edit review  
       app.put('/reviews/:id', async (req, res) => {
         const id = req.params.id;
         const filter = { _id: ObjectId(id) };
