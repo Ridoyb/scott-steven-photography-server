@@ -32,9 +32,22 @@ async function run() {
             res.send(services);
         });
 
+        app.get('/services', async (req, res) => {
+            const query = {}
+            const cursor = serviceCollection.find(query).sort({"_id":-01});
+            const services = await cursor.toArray();
+            res.send(services);
+        });
+
+        app.get('/services/:id', async (req, res) => {
+            const id = req.params.id;
+            const query = { _id: ObjectId(id) };
+            const service = await serviceCollection.findOne(query);
+            res.send(service);
+        });
 
 
-    // reviews system
+        // reviews
     app.get("/reviews", async (req, res) => {
         let query = {};
         if (req.query.email) {
@@ -53,7 +66,6 @@ async function run() {
             const query = { _id: ObjectId(id) };
             const service = await reviewsCollection.findOne(query);
             res.send(service);
-
         });
   
       // add new review
@@ -63,9 +75,7 @@ async function run() {
         res.send(result);
       });
 
-      
-
-      //Edit review  
+      //Edit review
       app.put('/reviews/:id', async (req, res) => {
         const id = req.params.id;
         const filter = { _id: ObjectId(id) };
@@ -81,9 +91,7 @@ async function run() {
     })
 
 
-
     //Add Service
-
     app.post("/services", async (req, res) => {
         const review = req.body;
         const result = await serviceCollection.insertOne(review);
